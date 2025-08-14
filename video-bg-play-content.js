@@ -26,6 +26,17 @@ if (IS_VIMEO) {
 // User activity tracking
 if (IS_YOUTUBE) {
   loop(pressKey, 60 * 1000, 10 * 1000); // every minute +/- 5 seconds
+
+  attachEndscreenListener();
+
+  let lastUrl = location.href;
+  new MutationObserver(() => {
+    const currentUrl = location.href;
+    if (currentUrl !== lastUrl) {
+      lastUrl = currentUrl;
+      attachEndscreenListener();
+    }
+  }).observe(document, { subtree: true, childList: true });
 }
 
 function pressKey() {
@@ -58,4 +69,25 @@ function getRandomInt(aMin, aMax) {
   let min = Math.ceil(aMin);
   let max = Math.floor(aMax);
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function attachEndscreenListener() {
+  setInterval(() => {
+    let video = document.querySelector('video');
+    if (video) {
+      let desktopEndscreen = document.querySelector('.ytp-autonav-endscreen-countdown-overlay');
+      if ((desktopEndscreen && desktopEndscreen.style.display === "") || document.getElementById('upnext-in-message')) {
+        chrome.storage.sync.get('instantAutoplay', ({ instantAutoplay }) => {
+          let delay = instantAutoplay ? 0 : 10000;
+          setTimeout(() => {
+            let nextButton = document.querySelector('[aria-label="Play next video"]');
+            if (nextButton) {
+              video.click();
+              nextButton.click();
+            }
+          }, delay);
+        });
+      }
+    }
+  }, 1000);
 }

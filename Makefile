@@ -1,4 +1,6 @@
 FILES := manifest.json \
+         settings.html \
+         settings.js \
          video-bg-play-content.js \
          $(wildcard _locales/*/messages.json) \
          icon.svg \

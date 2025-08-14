@@ -3,7 +3,8 @@
   "name": "__MSG_extensionName__",
   "default_locale": "en",
   "version": "1.8.1",
-
+  "permissions": ["storage"],
+  
   "description": "__MSG_extensionDescription__",
   "icons": {
     "48": "icon.svg",
@@ -15,6 +16,15 @@
       "id": "video-bg-play@timdream.org",
       "strict_min_version": "58.0"
     }
+  },
+
+  "browser_action": {
+    "default_popup": "settings.html",
+    "default_icon": {
+    "48": "icon.svg",
+    "96": "icon.svg"
+    },
+    "default_title": "video-bg-play-settings"
   },
 
   "content_scripts": [
